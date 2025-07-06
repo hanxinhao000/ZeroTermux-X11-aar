@@ -38,22 +38,25 @@ public class FullscreenWorkaround {
 
         View viewById = mActivity.findViewById(android.R.id.content);
         if (viewById != null && viewById instanceof FrameLayout) {
-            FrameLayout content = (FrameLayout)  ((FrameLayout) mActivity.findViewById(android.R.id.content)).getChildAt(0);
-            FrameLayout.LayoutParams frameLayoutParams = (FrameLayout.LayoutParams) content.getLayoutParams();
+            View childAt = ((FrameLayout) viewById).getChildAt(0);
+            if (childAt != null && childAt instanceof FrameLayout) {
+                FrameLayout content = (FrameLayout) childAt;
+                FrameLayout.LayoutParams frameLayoutParams = (FrameLayout.LayoutParams) content.getLayoutParams();
 
-            int usableHeightNow = computeUsableHeight(content);
-            if (usableHeightNow != usableHeightPrevious) {
-                int usableHeightSansKeyboard = content.getRootView().getHeight();
-                int heightDifference = usableHeightSansKeyboard - usableHeightNow;
-                if (heightDifference > (usableHeightSansKeyboard/4)) {
-                    // keyboard probably just became visible
-                    frameLayoutParams.height = usableHeightSansKeyboard - heightDifference;
-                } else {
-                    // keyboard probably just became hidden
-                    frameLayoutParams.height = usableHeightSansKeyboard;
+                int usableHeightNow = computeUsableHeight(content);
+                if (usableHeightNow != usableHeightPrevious) {
+                    int usableHeightSansKeyboard = content.getRootView().getHeight();
+                    int heightDifference = usableHeightSansKeyboard - usableHeightNow;
+                    if (heightDifference > (usableHeightSansKeyboard/4)) {
+                        // keyboard probably just became visible
+                        frameLayoutParams.height = usableHeightSansKeyboard - heightDifference;
+                    } else {
+                        // keyboard probably just became hidden
+                        frameLayoutParams.height = usableHeightSansKeyboard;
+                    }
+                    content.requestLayout();
+                    usableHeightPrevious = usableHeightNow;
                 }
-                content.requestLayout();
-                usableHeightPrevious = usableHeightNow;
             }
         }
     }
