@@ -1,0 +1,134 @@
+<!DOCTYPE resources [
+    <!ENTITY TERMUX_PACKAGE_NAME "com.termux">
+    <!ENTITY TERMUX_APP_NAME "Termux">
+    <!ENTITY TERMUX_X11_APP_NAME "Termux:X11">
+    ]>
+<resources>
+    <string name="app_name">&TERMUX_X11_APP_NAME;</string>
+
+    <!-- 连接状态 -->
+    <string name="not_connected">未连接</string>
+
+    <!-- 主界面按钮 -->
+    <string name="preferences_button_text">   首   设   置   </string>
+    <string name="help_button_text">   帮   助   </string>
+    <string name="exit_button_text">   退   出   </string>
+
+    <!-- 额外按键配置说明 -->
+    <string name="extra_keys_config_desc">此处可设置类似Termux应用的extra-keys变量（详见<a href="http://wiki.termux.com/wiki/Touch_Keyboard#Extra_Keys_Row">此文档</a>），例如：\n
+<b>META</b>表示<i>元键</i>，\n
+<b>KEYBOARD</b>表示<i>软键盘切换键</i>，\n
+<b>PREFERENCES</b>表示<i>打开首选项的键</i>，\n
+<b>MOUSE_HELPER</b>表示<i>鼠标辅助工具切换键</i>，\n
+<b>STYLUS_HELPER</b>表示<i>触控笔点击覆盖层切换键</i>，\n
+<b>EXIT</b>表示<i>应用退出键</i>。</string>
+
+    <!-- 通知栏相关 -->
+    <string name="notification_content_text">下拉显示选项</string>
+    <string name="notification_open_preferences">首选项</string>
+    <string name="notification_exit">退出</string>
+    <string name="notification_restart_activity">重启</string>
+    <string name="notification_toggle_soft_keyboard">切换输入法</string>
+    <string name="notification_toggle_additional_key_bar">切换附加键盘</string>
+    <string name="notification_release_pointer_and_keyboard_capture">释放捕获</string>
+    <string name="notification_toggle_fullscreen">切换全屏</string>
+
+    <!-- 首选项分类 -->
+    <string name="pref_main">首选项</string>
+    <string name="pref_output">显示输出</string>
+    <string name="pref_pointer">指针设置</string>
+    <string name="pref_kbd">键盘设置</string>
+    <string name="pref_other">其他设置</string>
+    <string name="pref_version">版本信息</string>
+    <string name="pref_ekbar">附加按键栏设置</string>
+    <string name="pref_userActions">用户操作响应</string>
+
+    <!-- 显示设置 -->
+    <string name="pref_displayResolutionMode">显示分辨率模式</string>
+    <string name="pref_displayScale">显示缩放比例(%)</string>
+    <string name="pref_displayResolutionExact">精确分辨率</string>
+    <string name="pref_displayResolutionCustom">自定义分辨率</string>
+    <string name="pref_adjustResolution">根据屏幕方向自动调整分辨率</string>
+    <string name="pref_displayStretch">拉伸以适应屏幕</string>
+    <string name="pref_Reseed">软键盘打开时重置屏幕尺寸</string>
+    <string name="pref_Reseed_summary">当软键盘打开时自动调整屏幕尺寸</string>
+    <string name="pref_PIP">画中画模式</string>
+    <string name="pref_PIP_summary">按下主页键或最近任务键时以画中画模式显示应用</string>
+    <string name="pref_fullscreen">全屏模式</string>
+    <string name="pref_fullscreen_summary">启用设备的沉浸式显示模式</string>
+    <string name="pref_forceOrientation">屏幕方向</string>
+    <string name="pref_hideCutout">隐藏屏幕缺口（如有）</string>
+    <string name="pref_keepScreenOn">保持屏幕常亮</string>
+
+    <!-- 指针设置 -->
+    <string name="pref_touchMode">触摸屏输入模式</string>
+    <string name="pref_scaleTouchpad">对触摸板应用显示缩放比例</string>
+    <string name="pref_showStylusClickOverride">显示触控笔点击选项</string>
+    <string name="pref_showStylusClickOverride_summary">触控笔点击覆盖（左键/中键/右键，仅限触控笔）</string>
+    <string name="pref_stylusIsMouse">启用触控笔鼠标模式</string>
+    <string name="pref_stylusIsMouse_summary">使触控笔像鼠标一样工作，此模式下将忽略压力、角度和倾斜数据</string>
+    <string name="pref_stylusButtonContactModifierMode">触控笔按键接触修饰模式</string>
+    <string name="pref_stylusButtonContactModifierMode_summary">仅在触控笔接触屏幕时按下按键才会发送右键或中键点击</string>
+    <string name="pref_showMouseHelper">显示鼠标点击辅助覆盖层</string>
+    <string name="pref_showMouseHelper_summary">可通过触摸板使用的屏幕鼠标按钮</string>
+    <string name="pref_pointerCapture">尽可能捕获外部指针设备</string>
+    <string name="pref_pointerCapture_summary">拦截所有硬件指针事件，按Esc键可返回Android系统</string>
+    <string name="pref_transformCapturedPointer">转换捕获的指针移动</string>
+    <string name="pref_capturedPointerSpeedFactor">捕获指针速度系数(%)</string>
+    <string name="pref_tapToMove">为触摸板启用点击移动</string>
+
+    <!-- 键盘设置 -->
+    <string name="pref_showAdditionalKbd">显示附加键盘</string>
+    <string name="pref_showAdditionalKbd_summary">显示带附加按键的键盘</string>
+    <string name="pref_showIMEWhileExternalConnected">连接外接键盘时显示输入法</string>
+    <string name="pref_showIMEWhileExternalConnected_summary">连接硬件键盘时仍显示软件键盘</string>
+    <string name="pref_preferScancodes">优先使用扫描码</string>
+    <string name="pref_preferScancodes_summary">由X服务器处理硬件键盘布局（需通过DE设置或setxkbmap配置）</string>
+    <string name="pref_hardwareKbdScancodesWorkaround">硬件键盘扫描码兼容方案</string>
+    <string name="pref_hardwareKbdScancodesWorkaround_summary">修复部分设备的扫描码问题，可能影响多语言布局</string>
+    <string name="pref_dexMetaKeyCapture">拦截系统快捷键</string>
+    <string name="pref_dexMetaKeyCapture_summary">仅限三星Dex模式，允许拦截\"Alt+F4\"、\"Meta+D\"等组合键</string>
+    <string name="pref_enableAccessibilityService">手动启用辅助功能服务以拦截系统快捷键</string>
+    <string name="pref_enableAccessibilityService_summary">打开辅助功能设置</string>
+    <string name="pref_enableAccessibilityServiceAutomatically">自动启用辅助功能服务以拦截系统快捷键</string>
+    <string name="pref_enableAccessibilityServiceAutomatically_summary">需要WRITE_SECURE_SETTINGS权限</string>
+    <string name="pref_pauseKeyInterceptingWithEsc">按Esc键暂停按键拦截</string>
+    <string name="pref_filterOutWinkey">过滤拦截的Win(Meta/Mod4)键</string>
+    <string name="pref_filterOutWinkey_summary">拦截时仍可使用Dex快捷键，需辅助功能服务支持</string>
+    <string name="pref_enforceCharBasedInput">强制字符输入模式</string>
+    <string name="pref_enforceCharBasedInput_summary">禁用预测输入和CJK语言支持</string>
+
+    <!-- 其他设置 -->
+    <string name="pref_clipboardEnable">剪贴板共享</string>
+    <string name="pref_requestNotificationPermission">请求通知权限</string>
+    <string name="pref_xrMode">Meta Oculus XR模式</string>
+    <string name="pref_configureResponseToUserActions">配置用户操作响应</string>
+    <string name="pref_storeSecondaryDisplayPreferencesSeparately">为副屏单独存储首选项</string>
+    <string name="pref_storeSecondaryDisplayPreferencesSeparately_summary">请在需要配置的显示屏上打开此界面</string>
+
+    <!-- 附加按键栏设置 -->
+    <string name="pref_adjustHeightForEK">为附加按键栏调整显示高度</string>
+    <string name="pref_adjustHeightForEK_summary">切换附加按键栏时可能导致屏幕闪烁</string>
+    <string name="pref_useTermuxEKBarBehaviour">每次按键后重置附加键栏特殊键状态</string>
+    <string name="pref_useTermuxEKBarBehaviour_summary">需长按锁定特殊键</string>
+    <string name="pref_opacityEKBar">附加按键栏透明度(%)</string>
+    <string name="pref_extra_keys_config">附加按键配置</string>
+
+    <!-- 用户操作响应 -->
+    <string name="pref_swipeUpAction">三指上滑</string>
+    <string name="pref_swipeDownAction">三指下滑</string>
+    <string name="pref_volumeUpAction">音量增加键</string>
+    <string name="pref_volumeDownAction">音量减少键</string>
+    <string name="pref_backButtonAction">返回键</string>
+    <string name="pref_notificationTapAction">通知点击</string>
+    <string name="pref_notificationButton0Action">通知第一个按钮</string>
+    <string name="pref_notificationButton1Action">通知第二个按钮</string>
+    <string name="pref_mediaKeysAction">媒体键</string>
+
+    <!-- 条件说明 -->
+    <string name="pref_summary_requiresExactOrCustom">需要将"显示分辨率模式"设为"精确"或"自定义"</string>
+    <string name="pref_summary_requiresIntercepting">需要通过Dex模式或辅助功能服务拦截系统快捷键</string>
+    <string name="pref_summary_requiresTrackpadAndNative">需要"触摸屏输入模式"设为"触摸板"且"显示分辨率模式"不为"原生"</string>
+
+    <string name="pref_volumeDownAction_summary">强制屏蔽，使用请用外部通道</string>
+</resources>
