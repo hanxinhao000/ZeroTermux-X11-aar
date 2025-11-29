@@ -673,6 +673,13 @@ public class LoriePreferences extends AppCompatActivity implements PreferenceFra
             System.err.print("termux-x11-preference [list] {key:value} [{key2:value2}]...");
             System.exit(0);
         }
+        // ZeroTermux add {@
+        @Keep
+        @SuppressLint("WrongConstant")
+        public static void mainZeroTermux(String[] args) {
+            main(args);
+        }
+        // @}
 
         @Keep
         @SuppressLint("WrongConstant")
@@ -683,10 +690,12 @@ public class LoriePreferences extends AppCompatActivity implements PreferenceFra
             Intent i = new Intent("com.termux.x11.CHANGE_PREFERENCE");
             Bundle bundle = new Bundle();
             boolean inputIsFile = !android.system.Os.isatty(in.getFileDescriptor());
-
             in.detachFd();
             bundle.putBinder(null, iface);
-            i.setPackage("com.termux.x11");
+            // ZeroTermux modify {@
+            //i.setPackage("com.termux.x11");
+            i.setPackage("com.termux");
+            // @}
             i.putExtra(null, bundle);
             if (getuid() == 0 || getuid() == 2000)
                 i.setFlags(0x00400000 /* FLAG_RECEIVER_FROM_SHELL */);
@@ -721,7 +730,6 @@ public class LoriePreferences extends AppCompatActivity implements PreferenceFra
 
             CmdEntryPoint.handler.post(() -> CmdEntryPoint.sendBroadcast(i));
             CmdEntryPoint.handler.postDelayed(() -> {
-                System.err.println("Failed to obtain response from app.");
                 System.exit(1);
             }, 5000);
             Looper.loop();
