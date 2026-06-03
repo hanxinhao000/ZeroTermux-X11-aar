@@ -157,6 +157,7 @@ class InputConnectionWrapper implements InputConnection {
     @Override
     public boolean commitText(CharSequence text, int newCursorPosition) {
         Log.d(TAG, "commitText(" + text + ", " + newCursorPosition + ")");
+        Log.d(TAG, "wrappedxxxxxxx: " + wrapped);
         return wrapped.commitText(text, newCursorPosition);
     }
 
@@ -347,7 +348,7 @@ public class LorieView extends SurfaceView implements InputStub {
     private final Point p = new Point();
     boolean commitedText = false;
     private final InputConnection mConnection = new InputConnectionWrapper(new BaseInputConnection(this, false) {
-        private final MainActivity a = MainActivity.getInstance();
+        private MainActivity a;
         private CharSequence currentComposingText = null;
 
         // We can not inspect X windows and get currently edited text
@@ -478,7 +479,11 @@ public class LorieView extends SurfaceView implements InputStub {
             }
 
             currentComposingText = reuse ? newText : null;
-
+            if (a == null) {
+                a = MainActivity.getInstance();
+            }
+            Log.i("TAG", "replaceTextxxxxxx a: " + a );
+            Log.i("TAG", "replaceTextxxxxxx a: " + a + ", mExtraKeys: " + a.mExtraKeys);
             if (a.useTermuxEKBarBehaviour && a.mExtraKeys != null)
                 a.mExtraKeys.unsetSpecialKeys();
             commitedText = true;

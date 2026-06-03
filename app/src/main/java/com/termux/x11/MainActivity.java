@@ -154,6 +154,7 @@ public class MainActivity extends BaseLoader {
     }
 
     public static MainActivity getInstance() {
+        Log.i("TAG", "getInstancexxx instance: " + instance);
         return instance;
     }
 
@@ -659,6 +660,7 @@ public class MainActivity extends BaseLoader {
     private void setTerminalToolbarView() {
         final ViewPager pager = getTerminalToolbarViewPager();
         ViewGroup parent = (ViewGroup) pager.getParent();
+        Log.i("TAG", "setTerminalToolbarView... ");
 
         pager.setVisibility(isVisible ? View.VISIBLE : View.INVISIBLE);
 
