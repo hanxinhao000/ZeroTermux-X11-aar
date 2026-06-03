@@ -26,6 +26,7 @@ import androidx.annotation.Keep;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.lang.reflect.Method;
 import java.net.URL;
 
 @Keep @SuppressLint({"StaticFieldLeak", "UnsafeDynamicallyLoadedCode"})
@@ -109,7 +110,90 @@ public class CmdEntryPoint extends ICmdEntryInterface.Stub {
             else
                 Log.e("Broadcast", "Falling back to manual broadcasting, failed to broadcast intent through Context:", e);
 
+            // ZeroTermux modify {@
             String packageName;
+            try {
+                android.content.pm.IPackageManager packageManager = android.app.ActivityThread.getPackageManager();
+                if (packageManager != null) {
+                    String[] packages = packageManager.getPackagesForUid(getuid());
+                    if (packages != null && packages.length > 0 && packages[0] != null)
+                        packageName = packages[0];
+                    else
+                        packageName = intent.getPackage();
+                } else {
+                    packageName = intent.getPackage();
+                }
+                if (packageName == null)
+                    packageName = "com.termux";
+            } catch (RemoteException ex) {
+                Log.e("Broadcast", "Failed to resolve package for manual broadcast, using target package", ex);
+                packageName = intent.getPackage() != null ? intent.getPackage() : "com.termux";
+            }
+            Object am;
+            try {
+                //noinspection JavaReflectionMemberAccess
+                am = android.app.ActivityManager.class
+                        .getMethod("getService")
+                        .invoke(null);
+            } catch (Exception e2) {
+                try {
+                    am = Class.forName("android.app.ActivityManagerNative")
+                            .getMethod("getDefault")
+                            .invoke(null);
+                } catch (Exception e3) {
+                    Log.e("Broadcast", "Failed to resolve activity manager for manual broadcast", e3);
+                    return;
+                }
+            }
+
+            if (am == null) {
+                Log.w("Broadcast", "Activity manager is null, will retry broadcast later");
+                return;
+            }
+            Object sender;
+            try {
+                Class<?> activityManagerInterface = Class.forName("android.app.IActivityManager");
+                sender = null;
+                for (Method method : activityManagerInterface.getMethods()) {
+                    if (!"getIntentSenderWithFeature".equals(method.getName()) && !"getIntentSender".equals(method.getName()))
+                        continue;
+
+                    Object[] args = createGetIntentSenderArgs(method.getParameterTypes(), packageName, intent);
+                    if (args == null)
+                        continue;
+
+                    sender = method.invoke(am, args);
+                    if (sender != null)
+                        break;
+                }
+            } catch (Exception ex) {
+                Log.e("Broadcast", "Failed to create intent sender for manual broadcast", ex);
+                return;
+            }
+            if (sender == null) {
+                Log.w("Broadcast", "Intent sender is null, will retry broadcast later");
+                return;
+            }
+            try {
+                //noinspection JavaReflectionMemberAccess
+                Object finishedReceiver = new IIntentReceiver.Stub() {
+                    @Override public void performReceive(Intent i, int r, String d, Bundle e, boolean o, boolean s, int a) {}
+                };
+                try {
+                    IIntentSender.class
+                            .getMethod("send", int.class, Intent.class, String.class, IBinder.class, IIntentReceiver.class, String.class, Bundle.class)
+                            .invoke(sender, 0, intent, null, null, finishedReceiver, null, null);
+                } catch (IllegalArgumentException ex) {
+                    sender.getClass()
+                            .getMethod("send", int.class, Intent.class, String.class, IBinder.class, IIntentReceiver.class, String.class, Bundle.class)
+                            .invoke(sender, 0, intent, null, null, finishedReceiver, null, null);
+                }
+            } catch (Exception ex) {
+                Log.e("Broadcast", "Manual broadcast failed, will retry later", ex);
+            }
+
+            //---------------------
+           /* String packageName;
             try {
                 packageName = android.app.ActivityThread.getPackageManager().getPackagesForUid(getuid())[0];
             } catch (RemoteException ex) {
@@ -143,7 +227,8 @@ public class CmdEntryPoint extends ICmdEntryInterface.Stub {
                         }, null, null);
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
-            }
+            }*/
+            // @}
         }
     }
 
@@ -237,4 +322,40 @@ public class CmdEntryPoint extends ICmdEntryInterface.Stub {
             }
         }
     }
+
+    // ZeroTermux add {@
+    private static Object[] createGetIntentSenderArgs(Class<?>[] parameterTypes, String packageName, Intent intent) {
+        Object[] args = new Object[parameterTypes.length];
+        int intIndex = 0;
+        int stringIndex = 0;
+
+        for (int i = 0; i < parameterTypes.length; i++) {
+            Class<?> type = parameterTypes[i];
+            if (type == int.class) {
+                if (intIndex == 0)
+                    args[i] = 1;
+                else if (intIndex == 2)
+                    args[i] = PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT;
+                else
+                    args[i] = 0;
+                intIndex++;
+            } else if (type == String.class) {
+                args[i] = stringIndex == 0 ? packageName : null;
+                stringIndex++;
+            } else if (type == IBinder.class) {
+                args[i] = null;
+            } else if (type == Intent[].class) {
+                args[i] = new Intent[] { intent };
+            } else if (type == String[].class) {
+                args[i] = null;
+            } else if (type == Bundle.class) {
+                args[i] = null;
+            } else {
+                return null;
+            }
+        }
+
+        return intIndex >= 4 ? args : null;
+    }
+    // @}
 }
