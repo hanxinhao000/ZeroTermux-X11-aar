@@ -482,8 +482,6 @@ public class LorieView extends SurfaceView implements InputStub {
             if (a == null) {
                 a = MainActivity.getInstance();
             }
-            Log.i("TAG", "replaceTextxxxxxx a: " + a );
-            Log.i("TAG", "replaceTextxxxxxx a: " + a + ", mExtraKeys: " + a.mExtraKeys);
             if (a.useTermuxEKBarBehaviour && a.mExtraKeys != null)
                 a.mExtraKeys.unsetSpecialKeys();
             commitedText = true;
