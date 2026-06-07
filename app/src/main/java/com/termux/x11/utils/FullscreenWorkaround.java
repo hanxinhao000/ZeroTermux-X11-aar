@@ -2,10 +2,11 @@ package com.termux.x11.utils;
 
 import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
 
-import android.graphics.Rect;
-import android.widget.FrameLayout;
-import android.view.View;
 import android.app.Activity;
+import android.graphics.Rect;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.termux.x11.MainActivity;
 import com.termux.x11.Prefs;
@@ -36,21 +37,28 @@ public class FullscreenWorkaround {
         )
             return;
 
-        FrameLayout content = (FrameLayout)  ((FrameLayout) mActivity.findViewById(android.R.id.content)).getChildAt(0);
-        FrameLayout.LayoutParams frameLayoutParams = (FrameLayout.LayoutParams) content.getLayoutParams();
+        ViewGroup contentRoot = mActivity.findViewById(android.R.id.content);
+        if (contentRoot == null || contentRoot.getChildCount() == 0) {
+            return;
+        }
+        View contentChild = contentRoot.getChildAt(0);
+        ViewGroup.LayoutParams layoutParams = contentChild.getLayoutParams();
+        if (layoutParams == null) {
+            return;
+        }
 
-        int usableHeightNow = computeUsableHeight(content);
+        int usableHeightNow = computeUsableHeight(contentChild);
         if (usableHeightNow != usableHeightPrevious) {
-            int usableHeightSansKeyboard = content.getRootView().getHeight();
+            int usableHeightSansKeyboard = contentChild.getRootView().getHeight();
             int heightDifference = usableHeightSansKeyboard - usableHeightNow;
-            if (heightDifference > (usableHeightSansKeyboard/4)) {
+            if (heightDifference > (usableHeightSansKeyboard / 4)) {
                 // keyboard probably just became visible
-                frameLayoutParams.height = usableHeightSansKeyboard - heightDifference;
+                layoutParams.height = usableHeightSansKeyboard - heightDifference;
             } else {
                 // keyboard probably just became hidden
-                frameLayoutParams.height = usableHeightSansKeyboard;
+                layoutParams.height = usableHeightSansKeyboard;
             }
-            content.requestLayout();
+            contentChild.requestLayout();
             usableHeightPrevious = usableHeightNow;
         }
     }
